@@ -4,3 +4,17 @@
     justify-content: center;
     align-items: center;
 }
+
+.wallet-modal {
+    display: flex;
+    flex-direction: column;
+}
+
+.wallet-modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.wallet-option {
+    margin: 10px
+}

@@ -14,6 +14,8 @@ import userIcon from '../../assets/icons/user-icon.svg';
 import Markdown from 'react-remarkable';
 import socketContext from '../../context/websocket/socketContext';
 import globalContext from '../../context/global/globalContext';
+import ConnectWallet, { WALLETS } from '../../pages/ConnectWallet/ConnectWallet';
+import { Container } from 'react-bootstrap';
 
 const NavMenuWrapper = styled.div`
   position: fixed;
@@ -122,6 +124,7 @@ const NavMenu = ({
   userName,
   chipsAmount,
   openModal,
+  onConnectWallet
   // lang,
   // setLang,
 }) => {
@@ -141,6 +144,34 @@ const NavMenu = ({
       "Shop",
       "Close",
     );
+
+  const openConnectWalletModal = () =>
+    openModal(
+      () => (
+        <div className="wallet-modal">
+          <div className="wallet-modal-content">
+            {WALLETS.map((wallet) => (
+              <Button
+                key={wallet.name}
+                className="wallet-option"
+                onClick={() => onConnectWallet(wallet.name)}
+              >
+                <span>{wallet.name}</span>
+              </Button>
+            ))}
+          </div>
+          <div className="wallet-modal-footer">
+            <span>New to Ethereum?</span>{' '}
+            <a href="https://ethereum.org/en/wallets/" target="_blank">
+              Learn more about wallets
+            </a>
+          </div>
+        </div>
+      ),
+      "Connect wallet",
+      "Close",
+    );
+  
 
   return (
     <NavMenuWrapper
@@ -221,6 +252,13 @@ const NavMenu = ({
               width="25"
               style={{ width: '25px' }}
             />
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              openConnectWalletModal();
+            }}
+          >
+            Connect to a Wallet
           </MenuItem>
         </MenuBody>
         <MenuFooter>
