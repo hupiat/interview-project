@@ -1,20 +1,24 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import globalContext from './../../context/global/globalContext'
-import LoadingScreen from '../../components/loading/LoadingScreen'
 
 import socketContext from '../../context/websocket/socketContext'
 import { CS_FETCH_LOBBY_INFO } from '../../pokergame/actions'
 import './ConnectWallet.scss'
+import Navbar from '../../components/navigation/Navbar';
+import MainPage from '../MainPage';
+import NavMenu from '../../components/navigation/NavMenu';
 
 const ConnectWallet = () => {
   const { setWalletAddress, setChipsAmount } = useContext(globalContext)
    
   const { socket } = useContext(socketContext)
+  const [openNavMenu, setOpenNavMenu] = useState(false);
   const navigate = useNavigate()
-  const useQuery = () => new URLSearchParams(useLocation().search);
+  const location = useLocation()
+  const useQuery = () => new URLSearchParams(location.search);
   let query = useQuery()
 
   useEffect(() => {
@@ -34,7 +38,11 @@ const ConnectWallet = () => {
 
   return (
     <>
-      <LoadingScreen />
+      <Navbar location={location} loggedIn chipsAmount={0} openNavMenu={() => setOpenNavMenu(!openNavMenu)} />
+      {
+        openNavMenu && <NavMenu openModal={openNavMenu} chipsAmount={0} onClose={() => setOpenNavMenu(false)} />
+      }
+      <MainPage />
     </>
   )
 }
